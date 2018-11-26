@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiatorBuddyREST", "RadiatorBuddyREST\RadiatorBuddyREST.csproj", "{A256391E-BBBB-4F94-821D-1DA9E0D791F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLib", "ModelLib\ModelLib.csproj", "{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A256391E-BBBB-4F94-821D-1DA9E0D791F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A256391E-BBBB-4F94-821D-1DA9E0D791F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A256391E-BBBB-4F94-821D-1DA9E0D791F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A256391E-BBBB-4F94-821D-1DA9E0D791F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63C88AEB-14F1-4F48-A172-E93CFC6A8B7A}
+	EndGlobalSection
+EndGlobal
