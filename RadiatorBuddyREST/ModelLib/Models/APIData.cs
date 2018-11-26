@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ModelLib
+namespace ModelLib.Models
 {
     public class APIData
     {
