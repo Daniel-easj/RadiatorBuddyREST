@@ -4,27 +4,28 @@ using System.Text;
 
 namespace ModelLib.Models
 {
-    class Listelements
+    public class Listelements
     {
-        private List<PiData> piList = new List<PiData>();
-        private int id;
+        private List<PiData> piLists = new List<PiData>();
+        private string id;
 
-        public Listelements(int id)
+        public Listelements(string id)
         {
             this.id = id;
+            
         }
 
         public Listelements()
         {
         }
 
-        public List<PiData> PiList
+        public List<PiData> PiLists
         {
-            get => piList;
-            set => piList = value;
+            get => piLists;
+            set => piLists = value;
         }
 
-        public int Id
+        public string Id
         {
             get => id;
             set => id = value;

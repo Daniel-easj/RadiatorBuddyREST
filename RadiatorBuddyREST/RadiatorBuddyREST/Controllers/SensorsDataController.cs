@@ -13,48 +13,64 @@ namespace RadiatorBuddyREST.Controllers
     [ApiController]
     public class SensorsDataController : ControllerBase
     {
+        private static Dictionary<string, List<PiData>> piDictionary = new Dictionary<string, List<PiData>>();
 
-        private static List<PiData> piList = new List<PiData>()
+        public SensorsDataController()
         {
-            new PiData("1",20,DateTime.Now, "piTest", true)
-        };
+            piDictionary.Add("1", new List<PiData>()
+            {
+                new PiData("1", 20, "time.exe", "room", true),
+                new PiData("2", 22, "time.exe", "room", true),
+                new PiData("2", 22, "time.exe", "room", true)
+            });
+            piDictionary.Add("2", new List<PiData>()
+            {
+                new PiData("2", 22, "time.exe", "room", true)
+            });
+        }
 
         // GET: api/SensorsData
         [HttpGet]
-        public List<PiData> Get()
+        public Dictionary<string, List<PiData>> Get()
         {
-            return piList;
+            return piDictionary;
         }
 
         // GET: api/SensorsData/5
         [HttpGet("{id}", Name = "Get")]
-        public PiData Get(string id)
+        public Dictionary<string, List<PiData>> Get(string id)
         {
-            return piList.Find(i => i.Id == id);
+            Dictionary<string, List<PiData>> tempdic = new Dictionary<string, List<PiData>>();
+            List<PiData> piitems = new List<PiData>();
+            foreach(var item in piDictionary[id])
+            {
+                piitems.Add(item);
+            }
+
+            tempdic.Add(id, piitems);
+            return tempdic;
+
         }
 
         // POST: api/SensorsData
         [HttpPost]
-        public void Post([FromBody] PiData obj)
+        public void Post([FromBody] List<PiData> obj)
         {
-            obj.Id = (piList.Count() + 1).ToString();
-            piList.Add(obj);
+
         }
 
         // PUT: api/SensorsData/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] PiData obj)
+        public void Put(string id, [FromBody] List<PiData> obj)
         {
-            obj.Id = id;
-            piList.Remove(piList.Find(i => i.Id == id));
-            piList.Add(obj);
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            piList.Remove(piList.Find(i => i.Id == id));
+            
         }
     }
 }
