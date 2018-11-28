@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using ModelLib.Models;
+using System.Threading;
 
 namespace UDPProxy
 {
@@ -13,7 +15,7 @@ namespace UDPProxy
     {
         private int PORT;
         private static string baseURL = "http://localhost:63998/api/SensorsData/";
-        private static List<string> maclist = new List<string>();
+        private static List<PiData> maclist = new List<PiData>();
 
         public Reciever(int port)
         {
@@ -22,39 +24,38 @@ namespace UDPProxy
 
         public void start()
         {
+            //var startTimeSpan = TimeSpan.Zero;
+            //var periodTimeSpan = TimeSpan.FromSeconds(5);
+
             IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
+
             using (UdpClient recieversocket = new UdpClient(PORT))
             {
                 while (true)
                 {
+                    //var timer = new Timer((e) => { Post(HandleOneRequest(recieversocket, remoteEP)); }, null, startTimeSpan, periodTimeSpan);
                     Post(HandleOneRequest(recieversocket, remoteEP));
                 }
             }
+
+        
         }
 
-        private static string HandleOneRequest(UdpClient recieversocket, IPEndPoint remoteEP)
+        private static List<PiData> HandleOneRequest(UdpClient recieversocket, IPEndPoint remoteEP)
         {
             byte[] data = recieversocket.Receive(ref remoteEP);
             string instr = Encoding.ASCII.GetString(data);
+            PiData piobj = JsonConvert.DeserializeObject<PiData>(instr);
 
             Console.WriteLine("modtaget " + instr);
             Console.WriteLine("sender ip= " + remoteEP.Address + " port=" + remoteEP.Port);
-
-            string[] tempobj;
-
-
-            tempobj = Regex.Split(instr, "[*]");
-
-            if (!maclist.Contains(tempobj[0]))
-            {
-                maclist.Add(tempobj[0] + tempobj[1]);
-            }
-
-            return maclist.ToString();
+            
+            maclist.Add(piobj);
+            return maclist;
 
         }
 
-        private static bool Post(string obj)
+        private static bool Post(List<PiData> obj)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -62,9 +63,11 @@ namespace UDPProxy
                 StringContent content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(baseURL, content).Result;
+                maclist.Clear();
 
                 if (response.IsSuccessStatusCode)
                 {
+                    
                     return true;
                 }
                 return false;
