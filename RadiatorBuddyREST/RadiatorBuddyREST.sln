@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLib", "ModelLib\ModelL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDPProxy", "UDPProxy\UDPProxy.csproj", "{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorPiUDP", "OutdoorPiUDP\OutdoorPiUDP.csproj", "{043289A2-2D81-4151-A6C0-A6D474958864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorPiUDP", "OutdoorPiUDP\OutdoorPiUDP.csproj", "{043289A2-2D81-4151-A6C0-A6D474958864}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
