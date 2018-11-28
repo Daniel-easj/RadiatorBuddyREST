@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiatorBuddyREST", "RadiatorBuddyREST\RadiatorBuddyREST.csproj", "{A256391E-BBBB-4F94-821D-1DA9E0D791F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadiatorBuddyREST", "RadiatorBuddyREST\RadiatorBuddyREST.csproj", "{A256391E-BBBB-4F94-821D-1DA9E0D791F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLib", "ModelLib\ModelLib.csproj", "{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLib", "ModelLib\ModelLib.csproj", "{2123CAA2-C7FE-4513-AE1A-A132A8BE7DC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDPProxy", "UDPProxy\UDPProxy.csproj", "{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDPProxy", "UDPProxy\UDPProxy.csproj", "{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorPiUDP", "OutdoorPiUDP\OutdoorPiUDP.csproj", "{043289A2-2D81-4151-A6C0-A6D474958864}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B323BAB6-C7E9-4549-ACA9-7955CFEEC869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{043289A2-2D81-4151-A6C0-A6D474958864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{043289A2-2D81-4151-A6C0-A6D474958864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{043289A2-2D81-4151-A6C0-A6D474958864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{043289A2-2D81-4151-A6C0-A6D474958864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
