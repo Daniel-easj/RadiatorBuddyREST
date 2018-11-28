@@ -16,7 +16,7 @@ namespace RadiatorBuddyREST.Controllers
 
         private static List<PiData> piList = new List<PiData>()
         {
-            new PiData(1,20,15,DateTime.Now)
+            new PiData("1",20,DateTime.Now, "piTest", true)
         };
 
         // GET: api/SensorsData
@@ -28,7 +28,7 @@ namespace RadiatorBuddyREST.Controllers
 
         // GET: api/SensorsData/5
         [HttpGet("{id}", Name = "Get")]
-        public PiData Get(int id)
+        public PiData Get(string id)
         {
             return piList.Find(i => i.Id == id);
         }
@@ -37,25 +37,22 @@ namespace RadiatorBuddyREST.Controllers
         [HttpPost]
         public void Post([FromBody] PiData obj)
         {
-            obj.Id = piList.Count() + 1;
-            obj.OutTemp = obj.InTemp - 2;
-            obj.DateTime = DateTime.Now;
+            obj.Id = (piList.Count() + 1).ToString();
             piList.Add(obj);
         }
 
         // PUT: api/SensorsData/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] PiData obj)
+        public void Put(string id, [FromBody] PiData obj)
         {
             obj.Id = id;
             piList.Remove(piList.Find(i => i.Id == id));
-            obj.DateTime = DateTime.Now;
             piList.Add(obj);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
             piList.Remove(piList.Find(i => i.Id == id));
         }

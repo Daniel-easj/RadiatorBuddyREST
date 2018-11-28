@@ -6,42 +6,50 @@ namespace ModelLib.Models
 {
     public class PiData
     {
-        private int _id;
-        private double _inTemp;
-        private double _OutTemp;
-        private DateTime _dateTime;
+        private string _id;
+        private double _temperature;
+        private string _location;
+        private bool _inDoor;
+        private string _timestamp;
 
-        public PiData(int id, double inTemp, double outTemp, DateTime dateTime)
+        public PiData(string id, double temperature, string timestamp, string location, bool inDoor)
         {
             _id = id;
-            _inTemp = inTemp;
-            _OutTemp = outTemp;
-            _dateTime = dateTime;
+            _temperature = temperature;
+            _timestamp = timestamp;
+            _location = location;
+            _inDoor = inDoor;
         }
 
         public PiData()
         {
         }
 
-        public double InTemp
+        public bool InDoor
         {
-            get => _inTemp;
-            set => _inTemp = value;
+            get => _inDoor;
+            set => _inDoor = value;
         }
 
-        public double OutTemp
+        public string Location
         {
-            get => _OutTemp;
-            set => _OutTemp = value;
+            get => _location;
+            set => _location = value;
         }
 
-        public DateTime DateTime
+        public double Temperature
         {
-            get => _dateTime;
-            set => _dateTime = value;
+            get => _temperature;
+            set => _temperature = value;
         }
 
-        public int Id
+        public string Timestamp
+        {
+            get => _timestamp;
+            set => _timestamp = value;
+        }
+
+        public string Id
         {
             get => _id;
             set => _id = value;

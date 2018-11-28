@@ -40,16 +40,17 @@ namespace UDPProxy
             Console.WriteLine("modtaget " + instr);
             Console.WriteLine("sender ip= " + remoteEP.Address + " port=" + remoteEP.Port);
 
-            string[] temp;
+            string[] tempobj;
 
-            temp = Regex.Split(instr, "[*]");
 
-            if (!maclist.Contains(temp[0]))
+            tempobj = Regex.Split(instr, "[*]");
+
+            if (!maclist.Contains(tempobj[0]))
             {
-                maclist.Add(temp[0] + temp[1]);
+                maclist.Add(tempobj[0] + tempobj[1]);
             }
 
-            return instr;
+            return maclist.ToString();
 
         }
 
@@ -57,7 +58,7 @@ namespace UDPProxy
         {
             using (HttpClient client = new HttpClient())
             {
-                string jsonStr = JsonConvert.SerializeObject(obj);
+                var jsonStr = JsonConvert.SerializeObject(obj);
                 StringContent content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(baseURL, content).Result;
