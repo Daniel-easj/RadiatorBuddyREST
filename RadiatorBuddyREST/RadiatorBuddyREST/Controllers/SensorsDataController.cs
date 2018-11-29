@@ -58,7 +58,7 @@ namespace RadiatorBuddyREST.Controllers
         [HttpPost]
         public void Post([FromBody] List<PiData> obj)
         {
-            string tempcount = (piDictionary.Count() + 1).ToString();
+            string tempcount = (piDictionary.Count()).ToString();
             piDictionary.Add(tempcount, obj);
         }
 

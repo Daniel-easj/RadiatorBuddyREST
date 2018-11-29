@@ -24,15 +24,6 @@ namespace OutdoorPiUDP
 
         public void start()
         {
-
-
-            PiData pidata = new PiData("181DEA819754", Math.Round(random.NextDouble() * (maxTemp - minTemp), 2), DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "forhave", false);
-
-            string jsonString = JsonConvert.SerializeObject(pidata);
-
-
-            byte[] data = Encoding.ASCII.GetBytes(jsonString);
-
             IPEndPoint receiverEP = new IPEndPoint(IPAddress.Broadcast, PORT);
 
             using (UdpClient senderSock = new UdpClient()) // ingen port = lytter IKKE
@@ -41,11 +32,25 @@ namespace OutdoorPiUDP
           
                 while (true)
                 {
-                    senderSock.Send(data, data.Length, receiverEP);
+                    senderClass(senderSock, receiverEP);
+
                     Thread.Sleep(30000);
                 }
 
             }
+        }
+
+        public static bool senderClass(UdpClient senderSock, IPEndPoint receiverEP)
+        {
+            PiData pidata = new PiData("181DEA819754", Math.Round(random.NextDouble() * (maxTemp - minTemp), 2), DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"), "forhave", false);
+
+            string jsonString = JsonConvert.SerializeObject(pidata);
+
+
+            byte[] data = Encoding.ASCII.GetBytes(jsonString);
+            senderSock.Send(data, data.Length, receiverEP);
+
+            return true;
         }
 
     }

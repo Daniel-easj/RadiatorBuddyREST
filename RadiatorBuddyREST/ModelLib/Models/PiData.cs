@@ -25,6 +25,13 @@ namespace ModelLib.Models
         {
         }
 
+        // brugt af list.contains for at skelne i mellem objekter
+        public override bool Equals(Object obj)
+        {
+            PiData other = (PiData) obj;
+            return this.Id == other.Id;
+        }
+
         public bool InDoor
         {
             get => _inDoor;
