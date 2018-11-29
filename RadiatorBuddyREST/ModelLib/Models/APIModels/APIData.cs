@@ -7,6 +7,7 @@ namespace ModelLib.Models.APIModels
         private APIMain apiMain;
         private APIClouds apiClouds;
         private string apitext;
+        private int timeDataUnix;
 
         public APIData()
         {
@@ -31,6 +32,12 @@ namespace ModelLib.Models.APIModels
         {
             get { return apiClouds; }
             set { apiClouds = value; }
+        }
+
+        public int dt
+        {
+            get { return timeDataUnix; }
+            set { timeDataUnix = value; }
         }
     }
 }
