@@ -17,14 +17,14 @@ namespace RadiatorBuddyREST.Controllers
     {
         private static List<PiData> data1 = new List<PiData>()
         {
-            new PiData("1", 20, "time.exe", "room", true),
-            new PiData("2", 22, "time.exe", "room", true),
-            new PiData("3", 22, "time.exe", "room", true)
+            new PiData("1", 20, DateTime.Now, "room", true),
+            new PiData("2", 22, DateTime.Now.Add(TimeSpan.FromSeconds(-20)), "room", true),
+            new PiData("3", 22, DateTime.Now, "room", true)
         };
 
         private List<PiData> data2 = new List<PiData>()
         {
-            new PiData("2", 22, "time.exe", "room", true)
+            new PiData("2", 22, DateTime.Now, "room", true)
         };
 
         private static Dictionary<string, List<PiData>> piDictionary = new Dictionary<string, List<PiData>>();
