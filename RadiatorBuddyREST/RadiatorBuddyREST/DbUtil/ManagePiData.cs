@@ -11,7 +11,7 @@ namespace RadiatorBuddyREST.DbUtil
     {
         private static List<PiData> piDataList = new List<PiData>(); 
         private const string CONNECTIONSTRING =
-                "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=202020Design?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private string queryStringAll = "select * from PiData";
         private string queryStringId = "select * from PiData WHERE MacAddress = @MacAddress";
@@ -83,7 +83,7 @@ namespace RadiatorBuddyREST.DbUtil
 
 
         // Tilføj ny PiData til Database
-        public void CreateGuest(PiData piData)
+        public void CreatePiData(PiData piData)
         {
             using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
             {
@@ -97,6 +97,8 @@ namespace RadiatorBuddyREST.DbUtil
 
 
                 command.Connection.Open();
+
+                command.ExecuteNonQuery();
 
             }
         }
