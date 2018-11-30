@@ -8,6 +8,7 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelLib.Models;
+using RadiatorBuddyREST.DbUtil;
 
 namespace RadiatorBuddyREST.Controllers
 {
@@ -15,66 +16,46 @@ namespace RadiatorBuddyREST.Controllers
     [ApiController]
     public class SensorsDataController : ControllerBase
     {
-        private static List<PiData> data1 = new List<PiData>()
+        private static List<PiData> piList = new List<PiData>()
         {
-            new PiData("1", 20, DateTime.Now, "room", true),
-            new PiData("2", 22, DateTime.Now.Add(TimeSpan.FromSeconds(-20)), "room", true),
-            new PiData("3", 22, DateTime.Now, "room", true)
+            new PiData("1", 20, DateTime.Now, "here", true)
         };
 
-        private List<PiData> data2 = new List<PiData>()
-        {
-            new PiData("2", 22, DateTime.Now, "room", true)
-        };
-
-        private static Dictionary<string, List<PiData>> piDictionary = new Dictionary<string, List<PiData>>();
-        
-
-        public SensorsDataController()
-        {
-            if (!piDictionary.ContainsKey("1") && !piDictionary.ContainsKey("2"))
-            {
-                piDictionary.Add("0", data1);
-                piDictionary.Add("1", data2);
-            }
-        }
+        //private ManagePiData dbConnection = new ManagePiData();
 
         // GET: api/SensorsData
         [HttpGet]
-        public Dictionary<string, List<PiData>> GetSensorData()
+        public List<PiData> GetSensorData()
         {
-            return piDictionary;
+            return piList;
         }
 
         // GET: api/SensorsData/5
         [HttpGet("{id}")]
-        public List<PiData> GetOneSensorData(string id)
+        public PiData GetOneSensorData(string id)
         {
-            Dictionary<string, List<PiData>> tempdic = new Dictionary<string, List<PiData>>();
-            List<PiData> piitems = piDictionary[id];
-            return piitems;
+            return piList.Find(i => i.Id == id);
         }
 
         // POST: api/SensorsData
         [HttpPost]
-        public void Post([FromBody] List<PiData> obj)
+        public void Post([FromBody] PiData obj)
         {
-            string tempcount = (piDictionary.Count()).ToString();
-            piDictionary.Add(tempcount, obj);
+            piList.Add(obj);
         }
 
         // PUT: api/SensorsData/5
-        [HttpPut("{id}")]
-        public void Put(string id, [FromBody] List<PiData> obj)
-        {
-            piDictionary[id] = obj;
-        }
+        //[HttpPut("{id}")]
+        //public void Put(string id, [FromBody] List<PiData> obj)
+        //{
+            
+        //}
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(string id)
-        {
-            piDictionary.Remove(id);
-        }
+        //// DELETE: api/ApiWithActions/5
+        //[HttpDelete("{id}")]
+        //public void Delete(string id)
+        //{
+            
+        //}
     }
 }

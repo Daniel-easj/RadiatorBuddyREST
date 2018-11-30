@@ -27,7 +27,7 @@ namespace UnitTestRBuddy.RESTTests
                 Method = HttpMethod.Get
             };
 
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             using (var response = client.SendAsync(request).Result)
             {
@@ -46,7 +46,7 @@ namespace UnitTestRBuddy.RESTTests
                 Method = HttpMethod.Get
             };
 
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             using (var response = client.SendAsync(request).Result)
             {
@@ -64,6 +64,8 @@ namespace UnitTestRBuddy.RESTTests
                 RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
                 Method = HttpMethod.Post
             };
+
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             using (var response = client.SendAsync(request).Result)
             {
