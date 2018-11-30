@@ -10,9 +10,9 @@ namespace ModelLib.Models
         private double _temperature;
         private string _location;
         private bool _inDoor;
-        private string _timestamp;
+        private DateTime _timestamp;
 
-        public PiData(string id, double temperature, string timestamp, string location, bool inDoor)
+        public PiData(string id, double temperature, DateTime timestamp, string location, bool inDoor)
         {
             _id = id;
             _temperature = temperature;
@@ -50,7 +50,7 @@ namespace ModelLib.Models
             set => _temperature = value;
         }
 
-        public string Timestamp
+        public DateTime Timestamp
         {
             get => _timestamp;
             set => _timestamp = value;
