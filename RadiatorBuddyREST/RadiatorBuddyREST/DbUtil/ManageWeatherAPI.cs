@@ -7,5 +7,6 @@ namespace RadiatorBuddyREST.DbUtil
 {
     public class ManageWeatherAPI
     {
+
     }
 }
