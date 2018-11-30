@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Net.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelLib.Models;
@@ -6,6 +8,7 @@ using RadiatorBuddyREST.Controllers;
 using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace UnitTestRBuddy.RESTTests
@@ -61,12 +64,6 @@ namespace UnitTestRBuddy.RESTTests
                 RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
                 Method = HttpMethod.Post
             };
-
-            PiData obj = new PiData("1", 20, DateTime.Now.ToString(), "kitchen", true);
-
-            string jsonobj = JsonConvert.SerializeObject(obj);
-
-            //byte[] data = Encoding.ASCII(jsonobj);
 
             using (var response = client.SendAsync(request).Result)
             {
