@@ -15,8 +15,7 @@ namespace UDPProxy
     internal class Reciever
     {
         private int PORT;
-        private static string baseURL = "http://localhost:63998/api/SensorsData/";
-        private static List<PiData> maclist = new List<PiData>();
+        private static string baseURL = "https://radiatorbuddy.azurewebsites.net/api/sensorsdata";
 
         public Reciever(int port)
         {
@@ -31,23 +30,14 @@ namespace UDPProxy
             {
                 while (true)
                 {
-                    
-                    if (maclist.Count >= 1)
-                    {
-                        Post(HandleOneRequest(recieversocket, remoteEP));
-                    }
-                    else
-                    {
-                        HandleOneRequest(recieversocket, remoteEP);
-                    }
-                            
+                    Post(HandleOneRequest(recieversocket, remoteEP));
                 }
             }
 
         
         }
 
-        private static List<PiData> HandleOneRequest(UdpClient recieversocket, IPEndPoint remoteEP)
+        private static PiData HandleOneRequest(UdpClient recieversocket, IPEndPoint remoteEP)
         {
             byte[] data = recieversocket.Receive(ref remoteEP);
             string instr = Encoding.ASCII.GetString(data);
@@ -57,18 +47,11 @@ namespace UDPProxy
 
             Console.WriteLine("modtaget " + instr);
             Console.WriteLine("sender ip= " + remoteEP.Address + " port=" + remoteEP.Port);
-
-            if (!maclist.Contains(piobj))
-            {
-                maclist.Add(piobj);
-            }
-
-            Console.WriteLine(maclist.Count);
-            return maclist;
+            return piobj;
 
         }
 
-        private static bool Post(List<PiData> obj)
+        private static bool Post(PiData obj)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -76,7 +59,6 @@ namespace UDPProxy
                 StringContent content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = client.PostAsync(baseURL, content).Result;
-                maclist.Clear();
 
                 if (response.IsSuccessStatusCode)
                 {

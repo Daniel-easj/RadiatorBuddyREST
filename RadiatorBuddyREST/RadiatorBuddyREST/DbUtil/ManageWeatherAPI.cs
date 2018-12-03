@@ -15,7 +15,7 @@ namespace RadiatorBuddyREST.DbUtil
         private static APIDataList apiDataList = new APIDataList();
         private static List<APIUVData> apiUvData = new List<APIUVData>();
         private const string CONNECTIONSTRING =
-            "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=Rbuddy2980?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private string queryStringAll = "select * from WeatherAPI";
 

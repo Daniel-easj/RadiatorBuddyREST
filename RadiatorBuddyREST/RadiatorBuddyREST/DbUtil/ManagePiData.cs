@@ -9,9 +9,10 @@ namespace RadiatorBuddyREST.DbUtil
 {
     public class ManagePiData
     {
-        private static List<PiData> piDataList = new List<PiData>(); 
-        private const string CONNECTIONSTRING =
-                "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=Rbuddy2980?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private static List<PiData> piDataList = new List<PiData>();
+        private const string dbPass = "";
+        private string CONNECTIONSTRING =
+                $"Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password={dbPass};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private string queryStringAll = "select * from PiData";
         private string queryStringId = "select * from PiData WHERE MacAddress = @MacAddress";

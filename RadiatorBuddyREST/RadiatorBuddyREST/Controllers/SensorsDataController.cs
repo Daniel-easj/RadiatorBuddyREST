@@ -19,12 +19,6 @@ namespace RadiatorBuddyREST.Controllers
     {
         private const string baseQueryString = "select * from PiData";
         private static ManagePiData piDataManager = new ManagePiData();
-        private static List<PiData> piList = new List<PiData>()
-        {
-            new PiData("1", 20, DateTime.Now, "here", true)
-        };
-
-        //private ManagePiData dbConnection = new ManagePiData();
 
         // GET: api/SensorsData
         [HttpGet]

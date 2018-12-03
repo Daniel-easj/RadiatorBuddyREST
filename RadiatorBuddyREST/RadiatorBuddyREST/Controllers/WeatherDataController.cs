@@ -66,10 +66,14 @@ namespace RadiatorBuddyREST.Controllers
 
         // GET: api/WeatherData
         [HttpGet]
-        public async Task<IEnumerable<APIData>> Get()
+        public APIDataList Get()
         {
             // TODO: sørg for at UV data kommer ind i weatherlist.ApiUVDataList
-            return await JsonWeatherStringToObject();
+            List<APIUVData> tempUvList = JsonWeatherUVStringToObject().Result as List<APIUVData>;
+            List<APIData> tempWeatherList = JsonWeatherStringToObject().Result as List<APIData>;
+            weatherList.list = tempWeatherList;
+            weatherList.ApiUvDataList = tempUvList;
+            return weatherList;
         }
 
         // GET: api/WeatherData

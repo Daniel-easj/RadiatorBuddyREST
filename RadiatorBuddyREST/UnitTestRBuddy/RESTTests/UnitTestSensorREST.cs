@@ -23,7 +23,7 @@ namespace UnitTestRBuddy.RESTTests
 
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
+                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata"),
                 Method = HttpMethod.Get
             };
 
@@ -42,7 +42,7 @@ namespace UnitTestRBuddy.RESTTests
 
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri("http://localhost:63998/api/SensorsData/1"),
+                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata/1"),
                 Method = HttpMethod.Get
             };
 
@@ -61,7 +61,7 @@ namespace UnitTestRBuddy.RESTTests
 
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri("http://localhost:63998/api/SensorsData/999"),
+                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata/999"),
                 Method = HttpMethod.Get
             };
 
@@ -73,25 +73,25 @@ namespace UnitTestRBuddy.RESTTests
             }
         }
 
-        [TestMethod]
-        public void Post_needstopass()
-        {
-            var client = new HttpClient(); // no HttpServer
+        //[TestMethod]
+        //public void Post_needstopass()
+        //{
+        //    var client = new HttpClient(); // no HttpServer
 
-            var send = new HttpRequestMessage
-            {
-                RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
-                Method = HttpMethod.Post
-            };
+        //    var send = new HttpRequestMessage
+        //    {
+        //        RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
+        //        Method = HttpMethod.Post
+        //    };
 
-            PiData newpi = new PiData("55", 20, DateTime.Now, "here", true);
-            string jstring = JsonConvert.SerializeObject(newpi);
-            send.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(jstring));
+        //    PiData newpi = new PiData("55", 20, DateTime.Now, "here", true);
+        //    string jstring = JsonConvert.SerializeObject(newpi);
+        //    send.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(jstring));
 
-            using (var response = client.SendAsync(send).Result)
-            {
-                Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            }
-        }
+        //    using (var response = client.SendAsync(send).Result)
+        //    {
+        //        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        //    }
+        //}
     }
 }
