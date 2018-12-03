@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using ModelLib.Models.APIModels;
 using ModelLib.Models.APIUVModels;
 using Newtonsoft.Json;
+using RadiatorBuddyREST.DbUtil;
 
 namespace RadiatorBuddyREST.Controllers
 {
@@ -16,31 +17,22 @@ namespace RadiatorBuddyREST.Controllers
     [ApiController]
     public class WeatherDataController : ControllerBase
     {
-        private static string weatherURI = "http://api.openweathermap.org/data/2.5/forecast?id=6543938&APPID=e46578c868b44e44510749d46ef3fd2f&units=metric";
+        private const string WEATHERURI = "http://api.openweathermap.org/data/2.5/forecast?id=6543938&APPID=e46578c868b44e44510749d46ef3fd2f&units=metric";
+        private const string WEATHERUVURI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=e46578c868b44e44510749d46ef3fd2f&lat=55.646016&lon=12.297937&cnt=5";
 
-        private static string weatherUVURI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=e46578c868b44e44510749d46ef3fd2f&lat=55.646016&lon=12.297937&cnt=5";
         private static HttpClient client = new HttpClient();
+
         private APIDataList weatherList;
+
         private APIUVDataList uvList;
         private static List<APIUVData> tempApiUVDataList = new List<APIUVData>();
 
-        public WeatherDataController()
-        {
-            //string jsonWeatherString = client
-            //    .GetStringAsync(weatherURI)
-            //    .Result;
-            //weatherList = JsonConvert.DeserializeObject<APIDataList>(jsonWeatherString);
+        private static ManageWeatherAPI weatherApiManager = new ManageWeatherAPI();
 
-            //string jsonUVstring =
-            //     client
-            //    .GetStringAsync(weatherUVURI)
-            //    .Result;
-            //weatherList.ApiUvDataList = JsonConvert.DeserializeObject<List<APIUVData>>(jsonUVstring);
-        }
 
         private async Task<string> JsonWeatherStringAsync()
         {
-            string result = await client.GetStringAsync(weatherURI);
+            string result = await client.GetStringAsync(WEATHERURI);
             return result;
         }
 
@@ -52,7 +44,7 @@ namespace RadiatorBuddyREST.Controllers
 
         private async Task<string> JsonWeatherUVStringAsync()
         {
-            string result = await client.GetStringAsync(weatherUVURI);
+            string result = await client.GetStringAsync(WEATHERUVURI);
             return result;
         }
 

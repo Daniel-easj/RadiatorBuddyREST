@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO.Pipes;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,8 @@ namespace RadiatorBuddyREST.Controllers
     [ApiController]
     public class SensorsDataController : ControllerBase
     {
+        private const string baseQueryString = "select * from PiData";
+        private static ManagePiData piDataManager = new ManagePiData();
         private static List<PiData> piList = new List<PiData>()
         {
             new PiData("1", 20, DateTime.Now, "here", true)
@@ -25,23 +28,55 @@ namespace RadiatorBuddyREST.Controllers
 
         // GET: api/SensorsData
         [HttpGet]
-        public List<PiData> GetSensorData()
+        public List<PiData> GetSensorData([FromQuery] QueryData qData)
         {
-            return piList;
+            StringBuilder queryString = new StringBuilder();
+            queryString.Append(baseQueryString);
+
+            // Hvis variablerne i qData er null må det betyde at der ikke er givet nogle parametre i uri - og så returneres alt pidata
+            if (qData.TimeFrom == null && qData.TimeTo == null)
+            {
+                return piDataManager.GetAllPiData();
+            }
+
+            queryString.Append(" WHERE");
+
+            // Eksempel: http://localhost:52588/api/sensorsdata?timefrom=2019-01-01%2014:00:00&timeto=2019-02-01%2014:00:00
+            if (qData.TimeFrom != null && qData.TimeTo != null)
+            {
+
+                queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{qData.TimeTo}'");
+
+                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
+            }
+
+            if (qData.TimeFrom == null && qData.TimeTo != null)
+            {
+
+            }
+
+            if (qData.TimeFrom != null && qData.TimeTo == null)
+            {
+
+            }
+
+            return null;
+
+
         }
 
         // GET: api/SensorsData/5
         [HttpGet("{id}")]
-        public PiData GetOneSensorData(string id)
+        public List<PiData> GetOneSensorData(string id)
         {
-            return piList.Find(i => i.Id == id);
+            return piDataManager.GetSpecificPiSensorData(id);
         }
 
         // POST: api/SensorsData
         [HttpPost]
         public void Post([FromBody] PiData obj)
         {
-            piList.Add(obj);
+            piDataManager.CreatePiData(obj);
         }
 
         // PUT: api/SensorsData/5

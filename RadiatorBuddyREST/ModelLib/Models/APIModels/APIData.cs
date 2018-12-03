@@ -14,6 +14,12 @@ namespace ModelLib.Models.APIModels
             
         }
 
+        public APIData(APIMain apiMain, APIClouds apiClouds, string apitext)
+        {
+            this.apiMain = apiMain;
+            this.apiClouds = apiClouds;
+            this.apitext = apitext;
+        }
 
         public APIMain main
         {

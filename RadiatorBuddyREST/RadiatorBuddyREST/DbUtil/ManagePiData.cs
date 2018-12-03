@@ -11,7 +11,7 @@ namespace RadiatorBuddyREST.DbUtil
     {
         private static List<PiData> piDataList = new List<PiData>(); 
         private const string CONNECTIONSTRING =
-                "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                "Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password=Rbuddy2980?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         private string queryStringAll = "select * from PiData";
         private string queryStringId = "select * from PiData WHERE MacAddress = @MacAddress";
@@ -35,12 +35,39 @@ namespace RadiatorBuddyREST.DbUtil
                   
                     string macAddress = reader.GetString(1);
                     string location = reader.GetString(2);
-                    int temperature = reader.GetInt32(3);
+                    double temperature = reader.GetFloat(3);
                     bool inDoor = reader.GetBoolean(4);
                     DateTime timeStamp = reader.GetDateTime(5);
 
 
                     piDataList.Add(new PiData(macAddress, temperature,timeStamp,location,inDoor));
+                }
+            }
+            return piDataList;
+        }
+
+        // Returner piData fra given periode til slut periode
+        public List<PiData> GetPiDataFromPeriod(string queryString)
+        {
+            piDataList.Clear();
+
+            using (SqlConnection connection = new SqlConnection(queryString))
+            {
+                SqlCommand command = new SqlCommand(queryStringAll, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    string macAddress = reader.GetString(1);
+                    string location = reader.GetString(2);
+                    double temperature = reader.GetFloat(3);
+                    bool inDoor = reader.GetBoolean(4);
+                    DateTime timeStamp = reader.GetDateTime(5);
+
+
+                    piDataList.Add(new PiData(macAddress, temperature, timeStamp, location, inDoor));
                 }
             }
             return piDataList;

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDPProxy", "UDPProxy\UDPPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorPiUDP", "OutdoorPiUDP\OutdoorPiUDP.csproj", "{043289A2-2D81-4151-A6C0-A6D474958864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRBuddy", "UnitTestRBuddy\UnitTestRBuddy.csproj", "{1D13FE71-83A2-4465-A622-FCC4A07E9283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestRBuddy", "UnitTestRBuddy\UnitTestRBuddy.csproj", "{1D13FE71-83A2-4465-A622-FCC4A07E9283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

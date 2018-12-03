@@ -7,11 +7,16 @@ namespace ModelLib.Models.APIUVModels
     public class APIUVData
     {
         private string dateISO;
-        private float uvValue;
+        private double uvValue;
 
         public APIUVData()
         {
             
+        }
+
+        public APIUVData(double uvValue)
+        {
+            this.uvValue = uvValue;
         }
 
         public string date_iso
@@ -20,7 +25,7 @@ namespace ModelLib.Models.APIUVModels
             set { dateISO = value; }
         }
 
-        public float value
+        public double value
         {
             get { return uvValue; }
             set { uvValue = value; }
