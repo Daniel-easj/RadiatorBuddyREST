@@ -35,7 +35,8 @@ namespace RadiatorBuddyREST.Controllers
 
             queryString.Append(" WHERE");
 
-            // Eksempel: http://localhost:52588/api/sensorsdata?timefrom=2019-01-01%2014:00:00&timeto=2019-02-01%2014:00:00
+            // Filtrering af data baseret på tidspunkt
+            // Eksempel: https://radiatorbuddy.azurewebsites.net/api/sensorsdata?timefrom=2018-03-12%2013:00:00&timeto=2018-03-12%2013:16:00
             if (qData.TimeFrom != null && qData.TimeTo != null)
             {
 

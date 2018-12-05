@@ -21,6 +21,13 @@ namespace ModelLib.Models
             _inDoor = inDoor;
         }
 
+        public PiData(string id, double temperature, DateTime timestamp)
+        {
+            _id = id;
+            _temperature = temperature;
+            _timestamp = timestamp;
+        }
+
         public PiData()
         {
         }
