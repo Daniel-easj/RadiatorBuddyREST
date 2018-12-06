@@ -35,7 +35,7 @@ namespace RadiatorBuddyREST
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(Options => Options.AllowAnyOrigin());
+            app.UseCors(Options => Options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseMvc();
 
         }

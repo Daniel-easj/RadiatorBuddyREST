@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using ModelLib;
 using ModelLib.Models;
 
 namespace RadiatorBuddyREST.DbUtil
@@ -10,6 +11,7 @@ namespace RadiatorBuddyREST.DbUtil
     public class ManagePiData
     {
         private static List<PiData> piDataList = new List<PiData>();
+        private static List<RBuddyRoom> roomDataList = new List<RBuddyRoom>();
         private const string dbPass = "Rbuddy4067?";
         private string CONNECTIONSTRING =
                 $"Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password={dbPass};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
@@ -19,6 +21,14 @@ namespace RadiatorBuddyREST.DbUtil
         private string insertSql = "insert into PiData (MacAddress, Location, Temperature, InDoor, TimeStamp) " +
                                    "Values (@MacAddress, @Location, @Temperature, @InDoor, @TimeStamp)";
 
+        private string queryStringAllRoom = "select * from RBuddyRoom";
+        private string insertSqlRoom = "insert into RBuddyRoom (MacAddress, Location, InDoor) " +
+                                   "Values (@MacAddress, @Location, @InDoor)";
+
+
+        //
+        // PIDATA:
+        //
 
         // Returner alt Data fra Pi sensorerne
         public List<PiData> GetAllPiData()
@@ -35,9 +45,9 @@ namespace RadiatorBuddyREST.DbUtil
                 {
                   
                     string macAddress = reader.GetString(1);
-                    //string location = reader.GetString(2);
+                    string location = reader.GetString(2);
                     double temperature = reader.GetFloat(3);
-                    //bool inDoor = reader.GetBoolean(4);
+                    bool inDoor = reader.GetBoolean(4);
                     DateTime timeStamp = reader.GetDateTime(5);
 
 
@@ -46,6 +56,8 @@ namespace RadiatorBuddyREST.DbUtil
             }
             return piDataList;
         }
+
+        
 
         // Returner piData fra given periode til slut periode
         public List<PiData> GetPiDataFromPeriod(string queryString)
@@ -62,9 +74,9 @@ namespace RadiatorBuddyREST.DbUtil
                 {
 
                     string macAddress = reader.GetString(1);
-                    //string location = reader.GetString(2);
+                    string location = reader.GetString(2);
                     double temperature = reader.GetFloat(3);
-                    //bool inDoor = reader.GetBoolean(4);
+                    bool inDoor = reader.GetBoolean(4);
                     DateTime timeStamp = reader.GetDateTime(5);
 
 
@@ -92,9 +104,9 @@ namespace RadiatorBuddyREST.DbUtil
                     while (reader.Read())
                     {
                         string macAddress = reader.GetString(1);
-                        //string location = reader.GetString(2);
+                        string location = reader.GetString(2);
                         int temperature = reader.GetInt32(3);
-                        //bool inDoor = reader.GetBoolean(4);
+                        bool inDoor = reader.GetBoolean(4);
                         DateTime timeStamp = reader.GetDateTime(5);
 
                         piDataList.Add(new PiData(macAddress, temperature, timeStamp));
@@ -123,6 +135,53 @@ namespace RadiatorBuddyREST.DbUtil
                 command.Parameters.AddWithValue("@InDoor", false);
                 command.Parameters.AddWithValue("@TimeStamp", piData.Timestamp);
 
+
+                command.Connection.Open();
+
+                command.ExecuteNonQuery();
+
+            }
+        }
+
+        //
+        // RUMDATA:
+        //
+
+        // Returner alt data fra alle rum
+        public List<RBuddyRoom> GetAllRoomData()
+        {
+            roomDataList.Clear();
+
+            using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
+            {
+                SqlCommand command = new SqlCommand(queryStringAllRoom, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    string macAddress = reader.GetString(0);
+                    string location = reader.GetString(1);
+                    bool inDoor = reader.GetBoolean(2);
+
+
+                    roomDataList.Add(new RBuddyRoom(macAddress,location,inDoor));
+                }
+            }
+            return roomDataList;
+        }
+
+        // Opret rum til database
+        public void CreateRoomData(RBuddyRoom room)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
+            {
+                SqlCommand command = new SqlCommand(insertSqlRoom, connection);
+
+                command.Parameters.AddWithValue("@MacAddress", room.MacAddress);
+                command.Parameters.AddWithValue("@Location", room.Location);
+                command.Parameters.AddWithValue("@InDoor", room.InDoor);
 
                 command.Connection.Open();
 

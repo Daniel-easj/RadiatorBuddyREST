@@ -2,7 +2,7 @@
 
 namespace UDPProxy
 {
-    class Program
+    public class Program
     {
         private const int PORT = 11912;
         static void Main(string[] args)

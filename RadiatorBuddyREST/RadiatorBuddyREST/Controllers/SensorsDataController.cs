@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModelLib;
 using ModelLib.Models;
 using RadiatorBuddyREST.DbUtil;
 
@@ -19,6 +20,10 @@ namespace RadiatorBuddyREST.Controllers
     {
         private const string baseQueryString = "select * from PiData";
         private static ManagePiData piDataManager = new ManagePiData();
+
+        //
+        // SENSORDATA:
+        //
 
         // GET: api/SensorsData
         [HttpGet]
@@ -47,12 +52,16 @@ namespace RadiatorBuddyREST.Controllers
 
             if (qData.TimeFrom == null && qData.TimeTo != null)
             {
+                queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{DateTime.Now}'");
 
+                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
             }
-
+        
             if (qData.TimeFrom != null && qData.TimeTo == null)
             {
+                queryString.Append($" TimeStamp Between '{DateTime.Now.Subtract(TimeSpan.MaxValue)}' AND '{qData.TimeTo}'");
 
+                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
             }
 
             return null;
@@ -62,9 +71,9 @@ namespace RadiatorBuddyREST.Controllers
 
         // GET: api/SensorsData/5
         [HttpGet("{id}")]
-        public List<PiData> GetOneSensorData(string id)
+        public List<PiData> GetOneSensorData([FromQuery] string macAddress)
         {
-            return piDataManager.GetSpecificPiSensorData(id);
+            return piDataManager.GetSpecificPiSensorData(macAddress.TrimEnd());
         }
 
         // POST: api/SensorsData
@@ -74,18 +83,25 @@ namespace RadiatorBuddyREST.Controllers
             piDataManager.CreatePiData(obj);
         }
 
-        // PUT: api/SensorsData/5
-        //[HttpPut("{id}")]
-        //public void Put(string id, [FromBody] List<PiData> obj)
-        //{
-            
-        //}
+        //
+        // ROOMDATA
+        //
 
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(string id)
-        //{
-            
-        //}
+        //Get data from all rooms
+        [HttpGet]
+        [Route("rooms")]
+        public List<RBuddyRoom> GetRoomData()
+        {
+            return piDataManager.GetAllRoomData();
+        }
+
+        //Create a room
+        [HttpPost]
+        [Route("rooms")]
+        public void CreateRoomData(RBuddyRoom room)
+        {
+            piDataManager.CreateRoomData(room);
+        }
+
     }
 }

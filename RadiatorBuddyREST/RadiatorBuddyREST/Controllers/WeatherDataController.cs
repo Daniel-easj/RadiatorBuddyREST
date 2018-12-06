@@ -23,6 +23,7 @@ namespace RadiatorBuddyREST.Controllers
         private static HttpClient client = new HttpClient();
 
         private APIDataList weatherList;
+        private static Dictionary<string, double> regulationData = new Dictionary<string, double>();
 
         private APIUVDataList uvList;
         private static List<APIUVData> tempApiUVDataList = new List<APIUVData>();
@@ -76,12 +77,28 @@ namespace RadiatorBuddyREST.Controllers
             return await JsonWeatherStringToObject();
         }
 
+
         // GET: api/WeatherData
         [HttpGet]
         [Route("uv")]
         public async Task<IEnumerable<APIUVData>> GetUVData()
         {
             return await JsonWeatherUVStringToObject();
+        }
+
+        // GET: api/WeatherData/dict
+        [HttpGet]
+        [Route("dict")]
+        public async Task<Dictionary<string, double>> GetRegulationData()
+        {
+            await JsonWeatherStringToObject();
+
+            regulationData.Clear();
+            foreach (APIData aData in weatherList.list)
+            {
+                regulationData.Add(aData.dt_txt, aData.main.temp);
+            }
+            return regulationData;
         }
 
     }

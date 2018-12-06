@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace UDPProxy
 {
-    internal class Reciever
+    public class Reciever
     {
         private int PORT;
         private static string baseURL = "https://radiatorbuddy.azurewebsites.net/api/sensorsdata";
@@ -20,6 +20,11 @@ namespace UDPProxy
         public Reciever(int port)
         {
             PORT = port;
+        }
+
+        public Reciever()
+        {
+            
         }
 
         public void start()
@@ -51,7 +56,7 @@ namespace UDPProxy
 
         }
 
-        private static bool Post(PiData obj)
+        public bool Post(PiData obj)
         {
             using (HttpClient client = new HttpClient())
             {

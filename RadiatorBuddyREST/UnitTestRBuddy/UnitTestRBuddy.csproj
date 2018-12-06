@@ -17,6 +17,7 @@
     <ProjectReference Include="..\ModelLib\ModelLib.csproj" />
     <ProjectReference Include="..\OutdoorPiUDP\OutdoorPiUDP.csproj" />
     <ProjectReference Include="..\RadiatorBuddyREST\RadiatorBuddyREST.csproj" />
+    <ProjectReference Include="..\UDPProxy\UDPProxy.csproj" />
   </ItemGroup>
 
 </Project>

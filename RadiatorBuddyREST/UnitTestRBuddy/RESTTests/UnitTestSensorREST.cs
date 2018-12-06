@@ -19,7 +19,7 @@ namespace UnitTestRBuddy.RESTTests
         [TestMethod]
         public void GetAll_needstopass()
         {
-            var client = new HttpClient(); // no HttpServer
+            var client = new HttpClient();
 
             var request = new HttpRequestMessage
             {
@@ -27,8 +27,6 @@ namespace UnitTestRBuddy.RESTTests
                 Method = HttpMethod.Get
             };
 
-            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             using (var response = client.SendAsync(request).Result)
             {
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -36,62 +34,32 @@ namespace UnitTestRBuddy.RESTTests
         }
 
         [TestMethod]
-        public void GetOne_needstopass()
+        public void GetFromPeriod_needstopass()
         {
-            var client = new HttpClient(); // no HttpServer
+            var client = new HttpClient();
+            Uri requestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata?timefrom=2018-03-12%2013:00:00&timeto=2018-03-12%2013:16:00");
 
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata/1"),
-                Method = HttpMethod.Get
-            };
-
-            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            using (var response = client.SendAsync(request).Result)
-            {
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            var response = client.GetAsync(requestUri).Result;
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
+            
         }
 
         [TestMethod]
-        public void GetOne_needstofail()
+        public void Post_needstopass()
         {
-            var client = new HttpClient(); // no HttpServer
+            var client = new HttpClient();
 
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata/999"),
-                Method = HttpMethod.Get
-            };
+            Uri RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/sensorsdata/");
 
-            //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            using (var response = client.SendAsync(request).Result)
-            {
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-            }
+            PiData newpi = new PiData("55", 20, DateTime.Now, "here", true);
+            string jstring = JsonConvert.SerializeObject(newpi);
+            StringContent content = new StringContent(jstring, Encoding.UTF8, "application/json");
+
+            var response = client.PostAsync(RequestUri, content).Result;
+
+            Assert.AreEqual(true, response.IsSuccessStatusCode);
+
         }
-
-        //[TestMethod]
-        //public void Post_needstopass()
-        //{
-        //    var client = new HttpClient(); // no HttpServer
-
-        //    var send = new HttpRequestMessage
-        //    {
-        //        RequestUri = new Uri("http://localhost:63998/api/SensorsData/"),
-        //        Method = HttpMethod.Post
-        //    };
-
-        //    PiData newpi = new PiData("55", 20, DateTime.Now, "here", true);
-        //    string jstring = JsonConvert.SerializeObject(newpi);
-        //    send.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(jstring));
-
-        //    using (var response = client.SendAsync(send).Result)
-        //    {
-        //        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-        //    }
-        //}
     }
 }
