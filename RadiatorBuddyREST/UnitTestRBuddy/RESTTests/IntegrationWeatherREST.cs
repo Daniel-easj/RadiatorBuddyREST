@@ -4,14 +4,17 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ModelLib.Models.APIModels;
 using Newtonsoft.Json;
 using RadiatorBuddyREST.Controllers;
 
 namespace UnitTestRBuddy.RESTTests
 {
     [TestClass]
-    public class UnitTestWeatherREST
+    public class IntegrationWeatherREST
     {
+
+        // Det bør være muligt at lave et Get request på vores Weather API
         [TestMethod]
         public void GetWeatherRegulationDataOk()
         {
@@ -19,7 +22,7 @@ namespace UnitTestRBuddy.RESTTests
 
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/weatherdata/dict"),
+                RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/weatherdata/"),
                 Method = HttpMethod.Get
             };
 
@@ -48,23 +51,20 @@ namespace UnitTestRBuddy.RESTTests
             Assert.AreEqual(40, weatherDictData.Count);
         }
 
-        //[TestMethod]
-        //public void PostWeatherFail()
-        //{
-        //    var client = new HttpClient();
+        // Det bør ikke være muligt at sende et POST request til vores WeatherData API, da den udelukkende eksisterer for at nedhente data
+        [TestMethod]
+        public void PostWeatherFail()
+        {
+            var client = new HttpClient();
+            APIData apiData = new APIData(new APIMain(22), new APIClouds(56), "2018-12-07 12:00:00");
+            Uri RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/weatherdata/");
 
-        //    var request = new HttpRequestMessage
-        //    {
-        //        RequestUri = new Uri("https://radiatorbuddy.azurewebsites.net/api/weatherdata/dict"),
-        //        Method = HttpMethod.Post
-        //    };
+            string jstring = JsonConvert.SerializeObject(apiData);
+            StringContent content = new StringContent(jstring, Encoding.UTF8, "application/json");
 
-        //    //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(RequestUri, content).Result;
 
-        //    using (var response = client.SendAsync(request).Result)
-        //    {
-        //        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        //    }
-        //}
+            Assert.AreEqual(false, response.IsSuccessStatusCode);
+        }
     }
 }

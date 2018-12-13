@@ -42,7 +42,7 @@ namespace OutdoorPiUDP
 
         public static bool senderClass(UdpClient senderSock, IPEndPoint receiverEP)
         {
-            PiData pidata = new PiData("181DEA819754", Math.Round(random.NextDouble() * (maxTemp - minTemp), 2), DateTime.Now, "forhave", false);
+            PiData pidata = new PiData("k4:27:ij:94:aa:a7", Math.Round(random.NextDouble() * (maxTemp - minTemp), 2), DateTime.Now.AddHours(1), "forhave", false);
 
             string jsonString = JsonConvert.SerializeObject(pidata);
 

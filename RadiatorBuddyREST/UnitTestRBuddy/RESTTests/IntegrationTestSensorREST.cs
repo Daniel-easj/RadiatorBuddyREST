@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace UnitTestRBuddy.RESTTests
 {
     [TestClass]
-    public class UnitTestSensorREST
+    public class IntegrationTestSensorREST
     {
         [TestMethod]
         public void GetAll_needstopass()

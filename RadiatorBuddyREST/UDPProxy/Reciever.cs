@@ -15,7 +15,7 @@ namespace UDPProxy
     public class Reciever
     {
         private int PORT;
-        private static string baseURL = "https://radiatorbuddy.azurewebsites.net/api/sensorsdata";
+        private static string baseURL = "http://localhost:52588/api/sensorsdata";
 
         public Reciever(int port)
         {

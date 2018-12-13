@@ -12,18 +12,26 @@ namespace RadiatorBuddyREST.DbUtil
     {
         private static List<PiData> piDataList = new List<PiData>();
         private static List<RBuddyRoom> roomDataList = new List<RBuddyRoom>();
+
+        //DB instancefields
         private const string dbPass = "Rbuddy4067?";
         private string CONNECTIONSTRING =
                 $"Server=tcp:db4490.database.windows.net,1433;Initial Catalog=MyDatabase;Persist Security Info=False;User ID=DanielB;Password={dbPass};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        private string queryStringAll = "select * from PiData";
-        private string queryStringId = "select * from PiData WHERE MacAddress = @MacAddress";
-        private string insertSql = "insert into PiData (MacAddress, Location, Temperature, InDoor, TimeStamp) " +
-                                   "Values (@MacAddress, @Location, @Temperature, @InDoor, @TimeStamp)";
-
-        private string queryStringAllRoom = "select * from RBuddyRoom";
-        private string insertSqlRoom = "insert into RBuddyRoom (MacAddress, Location, InDoor) " +
-                                   "Values (@MacAddress, @Location, @InDoor)";
+        //PiData Query strings
+        private string queryStringAll = "SELECT * from PiData order by Id asc";
+        private string queryStringId = "SELECT * from PiData WHERE MacAddress = @MacAddress order by TimeStamp asc";
+        private string insertSql = "INSERT into PiData (MacAddress, Location, Temperature, InDoor, TimeStamp) " +
+                                   "VALUES (@MacAddress, @Location, @Temperature, @InDoor, @TimeStamp)";
+        private string deleteSqlResetAllPiData = "DELETE FROM PiData";
+        
+        //RBuddyRoom Query strings
+        private string queryStringAllRoom = "SELECT * from RBuddyRoom";
+        private string insertSqlRoom = "INSERT into RBuddyRoom (MacAddress, Location, InDoor, OptimalTemperature, MinTemperature, MaxTemperature) " +
+                                   "VALUES (@MacAddress, @Location, @InDoor, @OptimalTemperature, @MinTemperature, @MaxTemperature)";
+        private string updateSqlRoom = "UPDATE RBuddyRoom " + "SET MacAddress = @MacAddress, Location = @Location, InDoor = @InDoor, OptimalTemperature = @OptimalTemperature, MinTemperature = @MinTemperature, MaxTemperature = @MaxTemperature"
+                                        + " WHERE MacAddress = @id";
+        private string deleteSqlRoom = "DELETE FROM RBuddyRoom WHERE MacAddress = @id";
 
 
         //
@@ -51,7 +59,7 @@ namespace RadiatorBuddyREST.DbUtil
                     DateTime timeStamp = reader.GetDateTime(5);
 
 
-                    piDataList.Add(new PiData(macAddress, temperature,timeStamp));
+                    piDataList.Add(new PiData(macAddress.Replace(" ", ""), temperature,timeStamp,location,inDoor));
                 }
             }
             return piDataList;
@@ -80,7 +88,7 @@ namespace RadiatorBuddyREST.DbUtil
                     DateTime timeStamp = reader.GetDateTime(5);
 
 
-                    piDataList.Add(new PiData(macAddress, temperature, timeStamp));
+                    piDataList.Add(new PiData(macAddress.Replace(" ",""),temperature,timeStamp,location,inDoor));
                 }
             }
             return piDataList;
@@ -105,11 +113,11 @@ namespace RadiatorBuddyREST.DbUtil
                     {
                         string macAddress = reader.GetString(1);
                         string location = reader.GetString(2);
-                        int temperature = reader.GetInt32(3);
+                        double temperature = reader.GetFloat(3);
                         bool inDoor = reader.GetBoolean(4);
                         DateTime timeStamp = reader.GetDateTime(5);
 
-                        piDataList.Add(new PiData(macAddress, temperature, timeStamp));
+                        piDataList.Add(new PiData(macAddress, temperature, timeStamp,location,inDoor));
                     }
 
                     return piDataList;
@@ -129,15 +137,27 @@ namespace RadiatorBuddyREST.DbUtil
             {
                 SqlCommand command = new SqlCommand(insertSql, connection);
 
+
                 command.Parameters.AddWithValue("@MacAddress", piData.Id);
-                command.Parameters.AddWithValue("@Location", "");
+                command.Parameters.AddWithValue("@Location", piData.Location ?? "");
                 command.Parameters.AddWithValue("@Temperature", piData.Temperature);
-                command.Parameters.AddWithValue("@InDoor", false);
+                command.Parameters.AddWithValue("@InDoor", piData.InDoor);
                 command.Parameters.AddWithValue("@TimeStamp", piData.Timestamp);
+
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+        }
+
+        public void ResetPiDataTable()
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
+            {
+                SqlCommand command = new SqlCommand(deleteSqlResetAllPiData, connection);
 
 
                 command.Connection.Open();
-
                 command.ExecuteNonQuery();
 
             }
@@ -164,9 +184,13 @@ namespace RadiatorBuddyREST.DbUtil
                     string macAddress = reader.GetString(0);
                     string location = reader.GetString(1);
                     bool inDoor = reader.GetBoolean(2);
+                    double optimalTemperature = reader.GetFloat(3);
+                    double minTemperature = reader.GetFloat(4);
+                    double maxTemperature = reader.GetFloat(5);
 
 
-                    roomDataList.Add(new RBuddyRoom(macAddress,location,inDoor));
+
+                    roomDataList.Add(new RBuddyRoom(macAddress.Replace(" ", ""),location,inDoor, optimalTemperature, minTemperature,maxTemperature));
                 }
             }
             return roomDataList;
@@ -182,6 +206,9 @@ namespace RadiatorBuddyREST.DbUtil
                 command.Parameters.AddWithValue("@MacAddress", room.MacAddress);
                 command.Parameters.AddWithValue("@Location", room.Location);
                 command.Parameters.AddWithValue("@InDoor", room.InDoor);
+                command.Parameters.AddWithValue("@OptimalTemperature", room.OptimalTemperature);
+                command.Parameters.AddWithValue("@MinTemperature", room.MinTemperature);
+                command.Parameters.AddWithValue("@MaxTemperature", room.MaxTemperature);
 
                 command.Connection.Open();
 
@@ -189,6 +216,42 @@ namespace RadiatorBuddyREST.DbUtil
 
             }
         }
+
+        //Opdater rum data
+        public void UpdateRoomData(RBuddyRoom room)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
+            {
+                SqlCommand command = new SqlCommand(updateSqlRoom, connection);
+
+                command.Parameters.AddWithValue("@MacAddress", room.MacAddress);
+                command.Parameters.AddWithValue("@Location", room.Location);
+                command.Parameters.AddWithValue("@InDoor", room.InDoor);
+                command.Parameters.AddWithValue("@OptimalTemperature", room.OptimalTemperature);
+                command.Parameters.AddWithValue("@MinTemperature", room.MinTemperature);
+                command.Parameters.AddWithValue("@MaxTemperature", room.MaxTemperature);
+                command.Parameters.AddWithValue("@id", room.MacAddress);
+
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        //Fjern et rum fra Database
+        public void DeleteRoomData(RBuddyRoom room)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTIONSTRING))
+            {
+                SqlCommand command = new SqlCommand(deleteSqlRoom, connection);
+
+                command.Parameters.AddWithValue("@id", room.MacAddress);
+
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+        }
+
 
     }
 }

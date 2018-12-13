@@ -17,13 +17,14 @@ namespace RadiatorBuddyREST.Controllers
     [ApiController]
     public class WeatherDataController : ControllerBase
     {
+
         private const string WEATHERURI = "http://api.openweathermap.org/data/2.5/forecast?id=6543938&APPID=e46578c868b44e44510749d46ef3fd2f&units=metric";
         private const string WEATHERUVURI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=e46578c868b44e44510749d46ef3fd2f&lat=55.646016&lon=12.297937&cnt=5";
 
         private static HttpClient client = new HttpClient();
 
-        private APIDataList weatherList;
-        private static Dictionary<string, double> regulationData = new Dictionary<string, double>();
+        private APIDataList weatherList = new APIDataList();
+        private static List<double> temperaturesToday = new List<double>();
 
         private APIUVDataList uvList;
         private static List<APIUVData> tempApiUVDataList = new List<APIUVData>();
@@ -86,20 +87,36 @@ namespace RadiatorBuddyREST.Controllers
             return await JsonWeatherUVStringToObject();
         }
 
-        // GET: api/WeatherData/dict
-        [HttpGet]
-        [Route("dict")]
-        public async Task<Dictionary<string, double>> GetRegulationData()
-        {
-            await JsonWeatherStringToObject();
 
-            regulationData.Clear();
-            foreach (APIData aData in weatherList.list)
+        [HttpGet]
+        [Route("today")]
+        public double GetAverageTempToday()
+        {
+            weatherList.list = JsonWeatherStringToObject().Result;
+
+            int numberOfTemps = 0;
+            double totalTempsValue = 0;
+
+            foreach (APIData apiData in weatherList.list)
             {
-                regulationData.Add(aData.dt_txt, aData.main.temp);
+                DateTime apiDataTime = DateTime.Parse(apiData.dt_txt);
+
+                if (apiDataTime.Ticks > DateTime.Today.Ticks && apiDataTime.Ticks < DateTime.Today.AddDays(1).Ticks)
+                {
+                    temperaturesToday.Add(apiData.main.temp);
+                }
             }
-            return regulationData;
+
+            foreach (double temperature in temperaturesToday)
+            {
+                numberOfTemps++;
+                totalTempsValue = totalTempsValue + temperature;
+            }
+
+            return Math.Round(totalTempsValue/numberOfTemps, 2);
         }
+
+      
 
     }
 }

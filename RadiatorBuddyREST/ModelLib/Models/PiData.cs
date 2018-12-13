@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ModelLib.Models
@@ -50,19 +51,19 @@ namespace ModelLib.Models
             get => _location;
             set => _location = value;
         }
-
+        [Range(-60, 60)]
         public double Temperature
         {
             get => _temperature;
             set => _temperature = value;
         }
-
+        [Required]
         public DateTime Timestamp
         {
             get => _timestamp;
             set => _timestamp = value;
         }
-
+        [Required, StringLength(17, MinimumLength = 17)]
         public string Id
         {
             get => _id;

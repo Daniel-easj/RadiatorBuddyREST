@@ -32,44 +32,48 @@ namespace RadiatorBuddyREST.Controllers
             StringBuilder queryString = new StringBuilder();
             queryString.Append(baseQueryString);
 
-            // Hvis variablerne i qData er null må det betyde at der ikke er givet nogle parametre i uri - og så returneres alt pidata
-            if (qData.TimeFrom == null && qData.TimeTo == null)
+            if (ModelState.IsValid)
             {
-                return piDataManager.GetAllPiData();
+                // Hvis variablerne i qData er null må det betyde at der ikke er givet nogle parametre i uri - og så returneres alt pidata
+                if (qData.TimeFrom == null && qData.TimeTo == null)
+                {
+                    return piDataManager.GetAllPiData();
+                }
+
+                queryString.Append(" WHERE");
+
+                // Filtrering af data baseret på tidspunkt
+                // Eksempel: https://radiatorbuddy.azurewebsites.net/api/sensorsdata?timefrom=2018-03-12%2013:00:00&timeto=2018-03-12%2013:16:00
+                if (qData.TimeFrom != null && qData.TimeTo != null)
+                {
+
+                    queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{qData.TimeTo}'");
+
+                    return piDataManager.GetPiDataFromPeriod(queryString.ToString());
+                }
+
+                if (qData.TimeFrom == null && qData.TimeTo != null)
+                {
+                    queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{DateTime.Now}'");
+
+                    return piDataManager.GetPiDataFromPeriod(queryString.ToString());
+                }
+
+                if (qData.TimeFrom != null && qData.TimeTo == null)
+                {
+                    queryString.Append($" TimeStamp Between '{DateTime.Now.Subtract(TimeSpan.MaxValue)}' AND '{qData.TimeTo}'");
+
+                    return piDataManager.GetPiDataFromPeriod(queryString.ToString());
+                }
             }
+            
 
-            queryString.Append(" WHERE");
 
-            // Filtrering af data baseret på tidspunkt
-            // Eksempel: https://radiatorbuddy.azurewebsites.net/api/sensorsdata?timefrom=2018-03-12%2013:00:00&timeto=2018-03-12%2013:16:00
-            if (qData.TimeFrom != null && qData.TimeTo != null)
-            {
-
-                queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{qData.TimeTo}'");
-
-                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
-            }
-
-            if (qData.TimeFrom == null && qData.TimeTo != null)
-            {
-                queryString.Append($" TimeStamp Between '{qData.TimeFrom}' AND '{DateTime.Now}'");
-
-                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
-            }
-        
-            if (qData.TimeFrom != null && qData.TimeTo == null)
-            {
-                queryString.Append($" TimeStamp Between '{DateTime.Now.Subtract(TimeSpan.MaxValue)}' AND '{qData.TimeTo}'");
-
-                return piDataManager.GetPiDataFromPeriod(queryString.ToString());
-            }
 
             return null;
-
-
         }
 
-        // GET: api/SensorsData/5
+        // GET: api/SensorsData/id
         [HttpGet("{id}")]
         public List<PiData> GetOneSensorData([FromQuery] string macAddress)
         {
@@ -80,7 +84,18 @@ namespace RadiatorBuddyREST.Controllers
         [HttpPost]
         public void Post([FromBody] PiData obj)
         {
-            piDataManager.CreatePiData(obj);
+            if (ModelState.IsValid)
+            {
+                piDataManager.CreatePiData(obj);
+            }
+        }
+
+        // Reset PiData table: api/SensorsData/resetdata
+        [HttpDelete]
+        [Route("resetdata")]
+        public void ResetPiDataTable()
+        {
+            piDataManager.ResetPiDataTable();
         }
 
         //
@@ -100,7 +115,25 @@ namespace RadiatorBuddyREST.Controllers
         [Route("rooms")]
         public void CreateRoomData(RBuddyRoom room)
         {
-            piDataManager.CreateRoomData(room);
+
+                piDataManager.CreateRoomData(room);
+       
+        }
+
+        //Update room
+        [HttpPut]
+        [Route("rooms")]
+        public void UpdateRoomData(RBuddyRoom room)
+        {
+            piDataManager.UpdateRoomData(room);
+        }
+
+        //Delete room
+        [HttpDelete]
+        [Route("rooms")]
+        public void DeleteRoomData(RBuddyRoom room)
+        {
+            piDataManager.DeleteRoomData(room);
         }
 
     }
