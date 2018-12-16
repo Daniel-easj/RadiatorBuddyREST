@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 
 namespace OutdoorPiUDP
 {
+    // Da vi i projektet kun har 1 Raspberry Pi til rådighed har vi denne UDPSender class 
+    // som skal forestille sig at være en falsk Raspberry pi sensor der er placeret udenfor.
     public class UDPSender
     {
         private int PORT;
@@ -22,6 +24,7 @@ namespace OutdoorPiUDP
             this.PORT = port;
         }
 
+        // Data sendes med mellemrum på 30 sekunder (30000ms)
         public void start()
         {
             IPEndPoint receiverEP = new IPEndPoint(IPAddress.Broadcast, PORT);
@@ -42,6 +45,7 @@ namespace OutdoorPiUDP
 
         public static bool senderClass(UdpClient senderSock, IPEndPoint receiverEP)
         {
+            // Kunstigt sensor data objekt. Skabes for at simulere en udendørs PI
             PiData pidata = new PiData("k4:27:ij:94:aa:a7", Math.Round(random.NextDouble() * (maxTemp - minTemp), 2), DateTime.Now.AddHours(1), "forhave", false);
 
             string jsonString = JsonConvert.SerializeObject(pidata);

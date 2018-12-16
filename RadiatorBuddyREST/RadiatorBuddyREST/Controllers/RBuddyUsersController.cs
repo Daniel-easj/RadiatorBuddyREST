@@ -29,11 +29,5 @@ namespace RadiatorBuddyREST.Controllers
         {
             rBuddyUserManager.UpdateRoomData(user);
         }
-
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

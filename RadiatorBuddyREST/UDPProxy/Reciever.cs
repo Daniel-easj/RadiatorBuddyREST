@@ -12,10 +12,11 @@ using System.Linq;
 
 namespace UDPProxy
 {
+    // Reciever klassen har til formål at videresende den data som modtages med UDP på port 11912. Dataen vil udgøres af temperaturmålinger fra en eller flere raspberry Pi.
     public class Reciever
     {
         private int PORT;
-        private static string baseURL = "http://localhost:52588/api/sensorsdata";
+        private static string baseURL = "https://radiatorbuddy.azurewebsites.net/api/sensorsdata";
 
         public Reciever(int port)
         {

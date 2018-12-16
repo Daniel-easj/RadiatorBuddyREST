@@ -115,9 +115,7 @@ namespace RadiatorBuddyREST.Controllers
         [Route("rooms")]
         public void CreateRoomData(RBuddyRoom room)
         {
-
-                piDataManager.CreateRoomData(room);
-       
+           piDataManager.CreateRoomData(room);
         }
 
         //Update room

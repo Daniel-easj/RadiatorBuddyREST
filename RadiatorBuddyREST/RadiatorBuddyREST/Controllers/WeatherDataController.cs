@@ -29,9 +29,7 @@ namespace RadiatorBuddyREST.Controllers
         private APIUVDataList uvList;
         private static List<APIUVData> tempApiUVDataList = new List<APIUVData>();
 
-        private static ManageWeatherAPI weatherApiManager = new ManageWeatherAPI();
-
-
+        // Weather
         private async Task<string> JsonWeatherStringAsync()
         {
             string result = await client.GetStringAsync(WEATHERURI);
@@ -44,6 +42,7 @@ namespace RadiatorBuddyREST.Controllers
             return weatherList.list;
         }
 
+        // UV
         private async Task<string> JsonWeatherUVStringAsync()
         {
             string result = await client.GetStringAsync(WEATHERUVURI);
@@ -70,11 +69,6 @@ namespace RadiatorBuddyREST.Controllers
         [HttpGet]
         public async Task<IEnumerable<APIData>> Get()
         {
-            // Udkommenter hvis weatherlist objekt skal indeholde en uvdatalist før den returneres
-            //List<APIUVData> tempUvList = JsonWeatherUVStringToObject().Result as List<APIUVData>;
-            //List<APIData> tempWeatherList = JsonWeatherStringToObject().Result as List<APIData>;
-            //weatherList.list = tempWeatherList;
-            //weatherList.ApiUvDataList = tempUvList;
             return await JsonWeatherStringToObject();
         }
 

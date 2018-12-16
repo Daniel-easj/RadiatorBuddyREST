@@ -46,7 +46,7 @@ namespace UnitTestRBuddy.RESTTests
 
             weatherDictData = JsonConvert.DeserializeObject<Dictionary<string, double>>(response);
 
-            //WeatherDictData bør altid indeholde 40 elementer da det er den mængde af data vi forespørger fra OpenWeatherMap API. 
+            //WeatherDictData bør altid indeholde 40 elementer da det er den mængde af data vi forespørger fra OpenWeatherMap API (Svarende til 5 dages vejrprognose). 
             //Hvis vi modtager flere elementer må det betyde at vi enten får for lidt eller for meget data 
             Assert.AreEqual(40, weatherDictData.Count);
         }
